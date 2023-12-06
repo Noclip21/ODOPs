@@ -1,0 +1,24 @@
+// vim: syntax=cpp
+#pragma once
+
+#include "common/types.h"
+
+#include "texture/Texture.h"
+#include "texture/constructors.inl"
+#include "texture/operators.inl"
+#include "texture/convert.inl"
+#include "texture/serialize.inl"
+
+#include "textureLod/TextureLod.h"
+#include "textureLod/defaults.inl"
+#include "textureLod/dimensions.inl"
+#include "textureLod/constructors.inl"
+#include "textureLod/operators.inl"
+#include "textureLod/convert.inl"
+#include "textureLod/serialize.inl"
+
+#include "filters/downscale.inl"
+#include "filters/nearest.inl"
+#include "filters/bilinear.inl"
+#include "filters/trilinear.inl"
+#include "filters/anisotropic.inl"

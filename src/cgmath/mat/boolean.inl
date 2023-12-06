@@ -1,0 +1,23 @@
+#pragma once
+
+#include "Mat.h"
+
+////////////////////////////////////////////////////////////////////////////////
+template<typename T,uint r,uint c>
+inline const bool any(const Mat<T,r,c>& m)
+{
+	bool ret = false;
+	for(uint i=0; i<m.n; ++i)
+		ret |= bool(m[i]);
+	return ret;
+}
+////////////////////////////////////////////////////////////////////////////////
+template<typename T,uint r,uint c>
+inline const bool all(const Mat<T,r,c>& m)
+{
+	bool ret = false;
+	for(uint i=0; i<m.n; ++i)
+		ret &= bool(m[i]);
+	return ret;
+}
+////////////////////////////////////////////////////////////////////////////////

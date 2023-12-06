@@ -1,0 +1,13 @@
+// vim: syntax=cpp
+#pragma once
+
+#include "common/types.h"
+
+#include "thread/Thread.h"
+#include "thread/Thread.inl"
+
+#include "compute/ComputeInput.h"
+#include "compute/ComputeTask.h"
+#include "compute/ComputeTask.inl"
+#include "compute/Compute.h"
+#include "compute/Compute.inl"

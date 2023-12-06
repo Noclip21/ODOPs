@@ -1,0 +1,40 @@
+#include <random>
+
+#include <cgmath>
+
+
+////////////////////////////////////////////////////////////////////////////////
+const float genSample()
+{
+	static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_real_distribution<> dist(0.0,1.0);
+    return dist(gen);
+}
+////////////////////////////////////////////////////////////////////////////////
+const vec2 genSample2()
+{
+	return vec2(genSample(),genSample());
+}
+////////////////////////////////////////////////////////////////////////////////
+const vec2 uniformDistribution(const vec2& s)
+{
+	return vec2(acos(sqrt(1-s.x)),s.y*M_PI)*2;
+}
+////////////////////////////////////////////////////////////////////////////////
+const vec3 cosineDistribution(const vec2& s)
+{
+	return vec3(sqrt(s.x)*cos(2*M_PI*s.y),sqrt(s.x)*sin(2*M_PI*s.y),sqrt(1-s.x));
+}
+////////////////////////////////////////////////////////////////////////////////
+const vec3 hemisphereSample(const vec3& d,const vec3& z)
+{
+	if(1-abs(z.z) <= 5e-5)
+		return d*sign(z.z);
+
+	// Quaternion from to
+	Quaternion q(normalize(vec4(-z.y,z.x,0,1+z.z)));
+
+	return q*d;
+}
+////////////////////////////////////////////////////////////////////////////////

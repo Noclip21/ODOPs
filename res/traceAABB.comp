@@ -1,0 +1,135 @@
+#version 450
+////////////////////////////////////////////////////////////////////////////////
+layout(local_size_x = 1,local_size_y = 1,local_size_z = 1) in;
+////////////////////////////////////////////////////////////////////////////////
+layout (packed,binding = 1) buffer OutBuffer    { float dataOut[];    };
+layout (packed,binding = 2) buffer VertBuffer   { float dataVert[];   };
+layout (packed,binding = 3) buffer SampleBuffer { float dataSample[]; };
+layout (packed,binding = 4) buffer NodeBuffer   { uint  dataNode[];   };
+layout (packed,binding = 5) buffer AABBBuffer   { float dataAABB[];   };
+layout (std140,binding = 6) buffer OBBBuffer    { mat3x4 dataOBB[];   };
+////////////////////////////////////////////////////////////////////////////////
+uniform int nSamples;
+uniform int sampleOffset;
+////////////////////////////////////////////////////////////////////////////////
+struct Vert { vec3 p,n; };
+struct Ray  { vec3 o,d; };
+struct Node { uint parent,left,right; };
+struct AABB { vec3 pmin,pmax; };
+struct OBB  { mat4x3 m; };
+////////////////////////////////////////////////////////////////////////////////
+const Vert getVert(uint i)
+{
+	i *= 6;
+	return Vert(vec3(dataVert[i],dataVert[i+1],dataVert[i+2]),vec3(dataVert[i+3],dataVert[i+4],dataVert[i+5]));
+}
+////////////////////////////////////////////////////////////////////////////////
+const vec3 getSample(uint i)
+{
+	i *= 3; return vec3(dataSample[i],dataSample[i+1],dataSample[i+2]);
+}
+////////////////////////////////////////////////////////////////////////////////
+const Node getNode(uint i)
+{
+	i *= 3; return Node(dataNode[i],dataNode[i+1],dataNode[i+2]);
+}
+////////////////////////////////////////////////////////////////////////////////
+const AABB getAABB(uint i)
+{
+	i *= 6;
+	return AABB(vec3(dataAABB[i],dataAABB[i+1],dataAABB[i+2]),vec3(dataAABB[i+3],dataAABB[i+4],dataAABB[i+5]));
+}
+////////////////////////////////////////////////////////////////////////////////
+const OBB getOBB(uint i)
+{
+	return OBB(transpose(dataOBB[i]));
+}
+////////////////////////////////////////////////////////////////////////////////
+const bool intersect(const Ray ray,const AABB aabb)
+{
+    const vec3 ta   = (aabb.pmin-ray.o)/ray.d;
+    const vec3 tb   = (aabb.pmax-ray.o)/ray.d;
+    const vec3 tmin = min(ta,tb);
+    const vec3 tmax = max(ta,tb);
+    const float t0  = max(max(tmin.x,tmin.y),tmin.z);
+    const float t1  = min(min(tmax.x,tmax.y),tmax.z);
+    return (t1 >= t0 && t1 > 0);
+}
+////////////////////////////////////////////////////////////////////////////////
+const bool intersect(const Ray ray,const OBB obb)
+{
+	return intersect(Ray(obb.m*vec4(ray.o,1),obb.m*vec4(ray.d,0)),AABB(vec3(0),vec3(1)));
+}
+////////////////////////////////////////////////////////////////////////////////
+const float trace(const Ray ray)
+{
+#define MOVE_DOWN  1
+#define MOVE_RIGHT 2
+#define MOVE_UP    3
+#define leafMask   0x80000000
+	float hits = 0;
+	uint prevId = 0,curId = 0,state = MOVE_DOWN;
+	const Node root = getNode(0);
+	while(true)
+	{
+		const Node node = getNode(curId);
+		if(prevId == node.right)
+		{
+			prevId = curId;
+			curId  = node.parent;
+			state  = MOVE_UP;
+		}else{
+			const uint nextId = (prevId == node.parent)?node.left:node.right;
+			const bool intersect = (state == MOVE_DOWN)?intersect(ray,getAABB(curId)):true;
+			if(state == MOVE_DOWN) hits++;
+			if(intersect)
+			{
+				prevId = curId;
+				curId  = nextId;
+				state  = MOVE_DOWN;
+				if((curId & leafMask) != 0)
+				{
+					uint tmp = curId;
+					curId    = prevId;
+					prevId   = tmp;
+					state = MOVE_RIGHT;
+				}
+			}else{
+				prevId = curId;
+				curId  = node.parent;
+				state  = MOVE_UP;
+			}
+		}
+
+		if(curId == 0 && prevId == root.right) break;
+	}
+	return hits;
+}
+////////////////////////////////////////////////////////////////////////////////
+const vec3 transformToFrame(const vec3 d,const vec3 z)
+{
+	if(1-abs(z.z) <= 5e-5)
+		return d*sign(z.z);
+
+	vec4 q = normalize(vec4(-z.y,z.x,0,1+z.z));
+
+	vec3 t = cross(q.xyz,d) + d*q.w;
+	return normalize(cross(q.xyz,t) + q.xyz*dot(d,q.xyz) + t*q.w);
+}
+////////////////////////////////////////////////////////////////////////////////
+void main()
+{
+	const Vert v = getVert(gl_GlobalInvocationID.x);
+
+	float hits = 0;
+	if(length(v.n) > 5e-3) 
+		for(uint i=0; i<nSamples; ++i)
+		{
+			const vec3 d = normalize(transformToFrame(normalize(getSample(sampleOffset+i)),normalize(v.n)));
+			const Ray ray = Ray(v.p+normalize(v.n)*5e-5,d);
+			hits += trace(ray);
+		}
+	
+	dataOut[gl_GlobalInvocationID.x] += hits;
+}
+////////////////////////////////////////////////////////////////////////////////

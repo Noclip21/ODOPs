@@ -1,0 +1,39 @@
+// vim: syntax=cpp
+#pragma once
+
+#include "file/File.h"
+#include "file/defaults.inl"
+#include "file/constructors.inl"
+#include "file/operators.inl"
+#include "file/write.inl"
+
+#include "configparser/ConfigParser.h"
+#include "configparser/constructors.inl"
+#include "configparser/operators.inl"
+#include "configparser/write.inl"
+
+#include "codec/obj/Tokenizer.h"
+#include "codec/obj/Parser.h"
+#include "codec/obj/Tokenizer_constructor.inl"
+#include "codec/obj/Parser_constructor.inl"
+
+#include "bitmap/Bitmap.h"
+#include "bitmap/serialize.inl"
+#include "bitmap/constructors.inl"
+#include "bitmap/constructors_freeimage.inl"
+#include "bitmap/operators.inl"
+#include "bitmap/convert.inl"
+#include "bitmap/write.inl"
+#include "bitmap/write_freeimage.inl"
+
+#include "scene/Scene.h"
+#include "scene/Material.h"
+#include "scene/Vert.h"
+#include "scene/Mesh.h"
+#include "scene/constructors.inl"
+#include "scene/constructors_assimp.inl"
+
+#include "vertstream/VertStream.h"
+#include "vertstream/Command.h"
+#include "vertstream/constructors.inl"
+#include "vertstream/serialize.inl"

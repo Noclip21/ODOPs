@@ -1,0 +1,67 @@
+// vim: syntax=cpp
+#pragma once
+
+#include "common/types.h"
+
+#include "matbase/MatBase.h"
+
+#include "matdata/MatData.h"
+
+#include "mat/Mat.h"
+#include "mat/print.inl"
+#include "mat/serialize.inl"
+#include "mat/constructors.inl"
+#include "mat/operators.inl"
+#include "mat/boolean.inl"
+
+#include "swizzle/Swizzle.h"
+#include "swizzle/print.inl"
+#include "swizzle/operators.inl"
+
+#include "common/defaults.inl"
+#include "common/dot.inl"
+#include "common/norm.inl"
+#include "common/normalize.inl"
+#include "common/distance.inl"
+#include "common/transpose.inl"
+#include "common/transposeMulti.inl"
+#include "common/determinant.inl"
+#include "common/inverse.inl"
+#include "common/cross.inl"
+#include "common/reflect.inl"
+#include "common/refract.inl"
+#include "common/angle.inl"
+#include "common/transform.inl"
+#include "common/functions.inl"
+#include "common/covariance.inl"
+#include "common/qr.inl"
+#include "common/eigs.inl"
+
+#include "morton/Morton.h"
+#include "morton/print.inl"
+#include "morton/operators.inl"
+#include "morton/codec.inl"
+
+#include "quaternion/Quaternion.h"
+#include "quaternion/constructors.inl"
+#include "quaternion/convert.inl"
+#include "quaternion/operators.inl"
+#include "quaternion/make.inl"
+#include "quaternion/angle.inl"
+#include "quaternion/cross.inl"
+#include "quaternion/conjugate.inl"
+#include "quaternion/inverse.inl"
+#include "quaternion/pow.inl"
+#include "quaternion/transform.inl"
+#include "quaternion/interpolate.inl"
+
+#include "pixel/convert.inl"
+#include "pixel/convert_aliases.inl"
+
+#include "polynomial/Polynomial.h"
+#include "polynomial/constructors.inl"
+#include "polynomial/print.inl"
+#include "polynomial/operators.inl"
+#include "polynomial/polyeval.inl"
+#include "polynomial/derivative.inl"
+#include "polynomial/polysolve.inl"

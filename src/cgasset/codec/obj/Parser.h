@@ -1,0 +1,49 @@
+#pragma once
+
+#include <vector>
+
+#include "Tokenizer.h"
+
+
+namespace codec
+{
+	namespace obj
+	{
+		struct Parser
+		{
+			enum KEY{
+				KEY_UNKNOWN,
+				KEY_FLOAT3_POSITION,
+				KEY_FLOAT3_NORMAL,
+				KEY_FLOAT3_TEXCOORD,
+				KEY_INT_FACE,
+				KEY_INT_LINE,
+				KEY_CSTR_MESH,
+				KEY_CSTR_MAT_FILE,
+				KEY_CSTR_MAT_DEF,
+				KEY_CSTR_MAT_USE,
+				KEY_FLOAT3_MAT_EMISSIVE,
+				KEY_FLOAT3_MAT_AMBIENT,
+				KEY_FLOAT3_MAT_DIFFUSE,
+				KEY_FLOAT3_MAT_SPECULAR,
+				KEY_FLOAT_MAT_SHININESS,
+				KEY_FLOAT_MAT_OPACITY,
+				KEY_FLOAT_MAT_TRANSPARENCY,
+				KEY_FLOAT_MAT_TRANSMISSION,
+				KEY_FLOAT_MAT_REFRACTION,
+				KEY_CSTR_MAT_MAP_EMISSIVE,
+				KEY_CSTR_MAT_MAP_AMBIENT,
+				KEY_CSTR_MAT_MAP_DIFFUSE,
+				KEY_CSTR_MAT_MAP_SPECULAR,
+				KEY_CSTR_MAT_MAP_SHININESS,
+				KEY_CSTR_MAT_MAP_OPACITY,
+				KEY_CSTR_MAT_MAP_NORMAL,
+			};
+
+			std::vector<char> data;
+			KEY key;
+
+			Parser(const codec::obj::Tokenizer&,const int);
+		};
+	};
+};

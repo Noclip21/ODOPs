@@ -1,0 +1,62 @@
+// vim: syntax=cpp
+#pragma once
+
+#include "common/Ray.h"
+#include "common/Hit.h"
+#include "common/PrimimitiveArrayLayout.h"
+
+#include "shape/ShapeBase.h"
+#include "shape/AABB.h"
+#include "shape/OBB.h"
+#include "shape/KDOP.h"
+#include "shape/Sphere.h"
+#include "shape/Triangle.h"
+#include "shape/Bezier.h"
+
+#include "shape/constructors_AABB.inl"
+#include "shape/constructors_OBB.inl"
+#include "shape/constructors_KDOP.inl"
+#include "shape/constructors_Sphere.inl"
+#include "shape/constructors_Triangle.inl"
+#include "shape/constructors_Bezier.inl"
+
+#include "shape/SAH_AABB.inl"
+#include "shape/SAH_OBB.inl"
+#include "shape/SAH_KDOP.inl"
+#include "shape/SAH_Sphere.inl"
+
+#include "shape/center_AABB.inl"
+#include "shape/center_OBB.inl"
+#include "shape/center_KDOP.inl"
+#include "shape/center_Sphere.inl"
+#include "shape/center_Triangle.inl"
+
+#include "shape/operator_KDOP.inl"
+#include "shape/interpolate_Bezier.inl"
+#include "shape/serialize.inl"
+
+#include "camera/Camera.h"
+#include "camera/constructors.inl"
+#include "camera/createRay.inl"
+
+#include "intersect/intersect_AABB.inl"
+#include "intersect/intersect_OBB.inl"
+#include "intersect/intersect_KDOP.inl"
+#include "intersect/intersect_Bezier.inl"
+#include "intersect/intersect_Sphere.inl"
+#include "intersect/intersect_Triangle.inl"
+#include "intersect/intersect_ArrayLayout.inl"
+
+#include "sort/spatialSort.inl"
+
+#include "bvh/Node.h"
+#include "bvh/BVH.h"
+#include "bvh/constructors.inl"
+#include "bvh/partitionedBuild.inl"
+#include "bvh/traverse.inl"
+#include "bvh/serialize.inl"
+
+#include "trace/opU.inl"
+#include "trace/trace.inl"
+
+#include "sample/sample.inl"
